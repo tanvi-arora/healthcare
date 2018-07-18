@@ -1,0 +1,98 @@
+---
+title: "Healthcare"
+author: "Tanvi Arora"
+date: "July 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#load libraries
+library(knitr)
+library(dplyr)
+library(ggplot2)
+
+#read knitr chunks
+read_chunk('R/load_dataset.R')
+read_chunk('R/manipulate_data.R')
+read_chunk('R/mental_health.R')
+read_chunk('R/plot_map.R')
+
+```
+
+## Mental Health Clinics
+
+This data set is a survey of every known healthcare facility that offers mental health services in the United States in 2015.Downloaded from (SAMHDA)[https://datafiles.samhsa.gov/study-dataset/national-mental-health-services-survey-2015-n-mhss-2015-ds0001-nid17098]
+
+  **a - load the dataset**
+
+```{r load_samhda}
+```
+
+  **b - list the state abbreviations *without their counts*, one abbreviation per State value.**
+  
+```{r get_stateabb}
+```
+
+Dataset returns 55 distinct values of state abbreviations across United States and its jurisdictions.
+
+  **c - Create a subset of the dataset that contains only Veterans Administration (VA) medical centers in the mainland United States - creating a listing of counts of these centers by state, including only mainland locations. Alaska, hawaii, and U.S. territories should be omitted. DC, while not a state, is in the mainland, so it should remain included.**
+
+```{r VA_mc_US}
+```
+
+  **d - Plot a barchart with bar's colors by what State it has listed.**
+
+```{r plot_va_mc_us}
+```
+
+NewYork and Florida have highest number of VA medical centers , more than 25. 
+
+## Cleaning and Bringing in New Features
+
+  **a - Merge with statesize.csv**
+  
+  This graph (1D) might be somewhat misleading, as bigger states may have more hospitals, but could be more sparsely located. Read statesize.csv into your R environment. This contains essentially a vector of square miles for each state. DC and Connecticut have the lowest number of medical centers for VA administration.
+  
+  load statesize file
+```{r load_statesize}
+```
+
+  Merge VA medical centers in US mainland with statesize dataset 
+```{r merge1}
+```
+
+Join didnot occur. We performed an inner join by not defining option 'all' in merge, defaults to FALSE. Dim shows 0 records merged . Another way to know this is ,Summary of the SqMiles has no data. In order to analyze this, we will print LST data from original dataset.
+```{r view_lst}
+```
+
+It is clear from looking at data in LST that there are whitespaces in the values. In order to perform merge, we need to remove these whitespaces before merging with statesize dataset.
+
+  **b - correct the merge**
+  
+  correct the problem with LST and merge with statesize dataset on Abbrev.
+
+```{r clean_lst}
+```
+
+Once the data is cleaned, we can perform merge again
+
+```{r merge2}
+```
+
+This time, inner join returned 47 rows. We have summary statistics of SqMiles data. So we can say that the join was performed correctly.we originally had 50 states data, but the join returned only 47. 
+
+  **c - Calculate new variable : VA_mc_per1000**
+  
+  new variable will store VA hospitals per thousand square miles.
+  
+```{r va_mc_per1000} 
+```
+
+  **d - Plot a barchart with Bar's colors based on Region**
+
+```{r plot_va_mc_us_per1000}
+```
+
+Plotting count of VA medical centers per 1000 sqMiles in states of US Mainland, we can see that RhodeIsland and New Jersey rank top 2 respectively  taking Northeast region on the top. Montana has the least number and overall states in West region seems to have least number of VA medical centers per 1000 sqMiles.
