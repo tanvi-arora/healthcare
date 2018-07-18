@@ -24,8 +24,11 @@ mh2015_puf.orig_ds <- mh2015_puf
 
 ##@knitr load_statesize
 
+#load statesize csv file 
 statesize <- read.csv('Data/statesize.csv', header=T)
 
+#show structure of statesize dataset
 str(statesize)
 
+#dimensions of the statesize dataset
 dim(statesize)

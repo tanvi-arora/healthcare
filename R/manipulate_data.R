@@ -32,7 +32,10 @@ mh2015.va.mc_us.count$LST <- trimws(mh2015.va.mc_us.count$LST, which = c("both")
 
 ##@knitr merge1
 
+#merge dataset with count of VA mc per state with statesize dataset to get the sqMiles of each state
 mh2015.va.mc_us.statesize1 <- merge(mh2015.va.mc_us.count, statesize, by.x="LST", by.y="Abbrev")
+
+#check dimension of the merged dataset and summary of sqMiles to validate join
 dim(mh2015.va.mc_us.statesize1)
 summary(mh2015.va.mc_us.statesize1$SqMiles)
 
@@ -41,6 +44,7 @@ summary(mh2015.va.mc_us.statesize1$SqMiles)
 
 ##@knitr merge2
 
+#merge dataset with count of VA mc per state with statesize dataset to get the sqMiles of each state
 mh2015.va.mc_us.statesize <- merge(mh2015.va.mc_us.count, statesize, by.x="LST", by.y="Abbrev")
 
 # list top records from the merged dataset
@@ -55,6 +59,7 @@ summary(mh2015.va.mc_us.statesize$SqMiles)
 
 ##@knitr va_mc_per1000
 
+#create a new field va_mc_per1000 to get count of VA medical centers per 1000SqMiles of each state
 mh2015.va.mc_us.statesize$va_mc_per1000 <- (mh2015.va.mc_us.statesize$count/mh2015.va.mc_us.statesize$SqMiles)*1000
 
 # list top records from the merged dataset
